@@ -1,10 +1,12 @@
+package tasks;
+
 import java.util.Objects;
 
 public class Task {
     protected int id;
     protected  String name;
     protected  String description;
-    protected  TaskStatus status;
+    protected TaskStatus status;
 
     public Task(String name, String description) {
         this.name = name;
@@ -56,7 +58,7 @@ public class Task {
         return Objects.hash(getId());
     }
 
-    void updateFrom(Task task) {
+    public void updateFrom(Task task) {
         this.id = task.id;
         this.name = task.name;
         this.description = task.description;
@@ -65,7 +67,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "tasks.Task{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
