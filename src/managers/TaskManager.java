@@ -6,7 +6,7 @@ import tasks.Task;
 
 import java.util.ArrayList;
 
-public interface  TaskManager {
+public interface TaskManager {
     ArrayList<Task> getAllTasks();
 
     ArrayList<Task> getAllSubtasks();

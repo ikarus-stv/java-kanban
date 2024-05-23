@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class InMemoryTaskManagerTest {
 
     InMemoryTaskManager tm;
+
     @BeforeEach
     public void beforeEach() {
         tm = new InMemoryTaskManager();
@@ -35,7 +36,6 @@ class InMemoryTaskManagerTest {
     }
 
 
-
     @Test
     void createSubtaskWithoutEpicIsUnSuccess() {
         Subtask st = new Subtask("1", "2", 2);
@@ -53,7 +53,7 @@ class InMemoryTaskManagerTest {
         Subtask trueST = new Subtask("1", "2", epicId);
         assertTrue(tm.createSubtask(trueST));
 
-        Subtask wrongST = new Subtask("1", "2", epicId+100);
+        Subtask wrongST = new Subtask("1", "2", epicId + 100);
         assertFalse(tm.createSubtask(wrongST));
 
 
@@ -61,12 +61,11 @@ class InMemoryTaskManagerTest {
 
     // создайте тест, в котором проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     @Test
-
     void taskIsUnchangedWhenRegister() {
         String taskName = "task1";
         String taskDescription = "description 1";
 
-        Task task = new Task( taskName, taskDescription);
+        Task task = new Task(taskName, taskDescription);
         tm.createTask(task);
         int id = task.getId();
         assertNotEquals(0, id);
