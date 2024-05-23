@@ -1,3 +1,4 @@
+import managers.Managers;
 import managers.TaskManager;
 import tasks.Epic;
 import tasks.Subtask;
@@ -8,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager tm = new TaskManager();
+        TaskManager tm = Managers.getDefault();
 
         Task task1 = new Task("Задача 1", "Описание задачи 1");
         tm.createTask(task1);
@@ -71,6 +72,15 @@ public class Main {
         System.out.println(tm.getAllEpics());
         System.out.println("Подзадачи:");
         System.out.println(tm.getAllSubtasks());
+
+        // Для проверки истории
+        for( Task t : tm.getAllTasks() ) {
+            tm.getTaskById(t.getId());
+        }
+
+        System.out.println("История:");
+        System.out.println(Managers.getDefaultHistory().getHistory());
+
 
     }
 }
