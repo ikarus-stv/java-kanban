@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
     private int lastId = 0;
-    final private Map<Integer, Task> taskMap = new HashMap<>();
-    final private Map<Integer, Subtask> subtasksMap = new HashMap<>();
-    final private Map<Integer, Epic> epicsMap = new HashMap<>();
+    private final  Map<Integer, Task> taskMap = new HashMap<>();
+    private final  Map<Integer, Subtask> subtasksMap = new HashMap<>();
+    private final  Map<Integer, Epic> epicsMap = new HashMap<>();
 
     @Override
     public ArrayList<Task> getAllTasks() {
