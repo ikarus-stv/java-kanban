@@ -14,12 +14,12 @@ public class Node {
     }
 
     void unlink() {
-        if(prev != null) {
+        if (prev != null) {
             prev.next = next;
             prev = null;
         }
 
-        if(next != null) {
+        if (next != null) {
             next.prev = prev;
             next = null;
         }
