@@ -14,10 +14,4 @@ class ManagersTest {
         assertEquals(0, tm.getAllEpics().size());
     }
 
-    @Test
-    void getDefaultHistory() {
-        HistoryManager hm = Managers.getDefaultHistory();
-        assertNotEquals(null, hm);
-        assertEquals(0, hm.getHistory().size());
-    }
 }

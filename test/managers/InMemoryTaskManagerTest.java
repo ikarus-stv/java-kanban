@@ -73,4 +73,23 @@ class InMemoryTaskManagerTest {
         assertEquals(taskDescription, task.getDescription());
     }
 
+    // Удаляемые подзадачи не должны хранить внутри себя старые id
+    @Test
+    void deletingSubtaskIsClearsId() {
+        Epic epic = new Epic("1", "2");
+        tm.createEpic(epic);
+        int epicId = epic.getId();
+        assertNotEquals(0, epicId);
+
+        Subtask trueST = new Subtask("1", "2", epicId);
+        assertTrue(tm.createSubtask(trueST));
+
+        int subTaskID = trueST.getId();
+        assertNotEquals(0, subTaskID);
+
+        tm.deleteSubtask(subTaskID);
+        assertEquals(0, trueST.getId());
+
+    }
+
 }

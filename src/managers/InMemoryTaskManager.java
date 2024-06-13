@@ -169,6 +169,7 @@ public class InMemoryTaskManager implements TaskManager {
             Epic epic = epicsMap.get(epicId);
             epic.removeSubtask(subtasksMap.get(id));
             subtasksMap.remove(id);
+            subtask.setId(0);
             return true;
         } else {
             return false;
