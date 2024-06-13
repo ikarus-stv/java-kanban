@@ -13,7 +13,7 @@ public class Node {
         this.task = task;
     }
 
-    void unlink() {
+    public void unlink() {
         if (prev != null) {
             prev.next = next;
             prev = null;
