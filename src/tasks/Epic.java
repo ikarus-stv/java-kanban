@@ -39,19 +39,19 @@ public class Epic extends Task {
 
     public void recalcStatus() {
         tasks.TaskStatus newStatus;
-        if(subtasks.isEmpty())
+        if (subtasks.isEmpty())
             newStatus = tasks.TaskStatus.NEW;
         else {
             boolean isAllNew = true;
-            for(int i=0; i<subtasks.size() && isAllNew; i++)
+            for (int i = 0; i < subtasks.size() && isAllNew; i++)
                 isAllNew = subtasks.get(i).getStatus() == tasks.TaskStatus.NEW;
-            if(isAllNew)
+            if (isAllNew)
                 newStatus = tasks.TaskStatus.NEW;
             else {
                 boolean isAllDone = true;
-                for(int i=0; i<subtasks.size() && isAllDone; i++)
+                for (int i = 0; i < subtasks.size() && isAllDone; i++)
                     isAllDone = subtasks.get(i).getStatus() == tasks.TaskStatus.DONE;
-                if(isAllDone)
+                if (isAllDone)
                     newStatus = tasks.TaskStatus.DONE;
                 else
                     newStatus = tasks.TaskStatus.IN_PROGRESS;
