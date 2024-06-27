@@ -11,8 +11,8 @@ import java.util.Map;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private String fileName;
-    final private String FILE_HEADER = "id,type,name,status,description,epic";
-    final private String COMMA = ",";
+    private static final String FILE_HEADER = "id,type,name,status,description,epic";
+    private static final String COMMA = ",";
 
     public FileBackedTaskManager(String fileName) {
         this.fileName = fileName;
