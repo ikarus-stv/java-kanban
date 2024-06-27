@@ -5,11 +5,13 @@ import java.util.List;
 
 public class Epic extends Task {
 
-    private final List<Subtask> subtasks;
+    private final List<Subtask> subtasks = new ArrayList<>();
+
+    public Epic() {
+    }
 
     public Epic(String name, String description) {
         super(name, description);
-        subtasks = new ArrayList<>();
     }
 
     public void updateFrom(Epic epic) {
@@ -30,11 +32,20 @@ public class Epic extends Task {
                 '}';
     }
 
+    @Override
+    public String getTaskTypeName() {
+        return TaskType.EPIC.name();
+    }
+
     public void addSubtask(Subtask subtask) {
         if (!subtasks.contains(subtask)) {
             subtasks.add(subtask);
             recalcStatus();
         }
+    }
+
+    public void dirtyAddSubtask(Subtask subtask) {
+        subtasks.add(subtask);
     }
 
     public void recalcStatus() {

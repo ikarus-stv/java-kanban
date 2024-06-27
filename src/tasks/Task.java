@@ -1,12 +1,17 @@
 package tasks;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Task {
     protected int id;
-    protected  String name;
-    protected  String description;
+    protected String name;
+    protected String description;
     protected TaskStatus status;
+
+    public Task() {
+    }
 
     public Task(String name, String description) {
         this.name = name;
@@ -50,7 +55,7 @@ public class Task {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Task)) return false;
-        Task oAsTask = (Task)o;
+        Task oAsTask = (Task) o;
         return getId() == oAsTask.getId();
     }
 
@@ -75,4 +80,46 @@ public class Task {
                 ", status=" + status +
                 '}';
     }
+
+    public List<String> toStreamableList() {
+        var result = new ArrayList<String>();
+        result.add(Integer.toString(getId()));                          // 0
+        result.add(getTaskTypeName());                                  // 1
+        result.add(getName());                                          // 2
+        result.add(getStatus().name());                                 // 3
+        result.add(getDescription());                                   // 4
+        return result;
+    }
+
+    public String getTaskTypeName() {
+        return TaskType.TASK.name();
+    }
+
+    protected void fromStreamableList(List<String> streamableList) {
+        this.setId(Integer.parseInt(streamableList.get(0)));
+        this.setName(streamableList.get(2));
+        this.setStatus(TaskStatus.valueOf(streamableList.get(3)));
+        this.setDescription(streamableList.get(4));
+    }
+
+    public static Task taskFromStreamableList(List<String> streamableList) {
+        Task result = null;
+        switch (TaskType.valueOf(streamableList.get(1).toUpperCase())) {
+            case TASK:
+                result = new Task();
+                break;
+            case SUBTASK:
+                result = new Subtask();
+                break;
+            case EPIC:
+                result = new Epic();
+                break;
+            default:
+                return null;
+        }
+        result.fromStreamableList(streamableList);
+
+        return result;
+    }
+
 }
