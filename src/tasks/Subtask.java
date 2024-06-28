@@ -27,8 +27,8 @@ public class Subtask extends Task {
     }
 
     @Override
-    public String getTaskTypeName() {
-        return TaskType.SUBTASK.name();
+    public TaskType getTaskType() {
+        return TaskType.SUBTASK;
     }
 
     @Override

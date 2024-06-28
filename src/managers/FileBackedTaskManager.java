@@ -139,12 +139,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 List<String> list = Arrays.asList(split);
                 Task readedTask = Task.taskFromStreamableList(list);
                 if (readedTask != null) {
-                    if (readedTask instanceof Epic epic) {
-                        epicsMap.put(epic.getId(), epic);
-                    } else if (readedTask instanceof Subtask subtask) {
-                        subtasksMap.put(subtask.getId(), subtask);
-                    } else if (readedTask instanceof Task task) {
-                        taskMap.put(task.getId(), task);
+                    int id = readedTask.getId();
+                    switch (readedTask.getTaskType()) {
+                        case TASK:
+                            taskMap.put(id, readedTask);
+                            break;
+                        case SUBTASK:
+                            subtasksMap.put(id, (Subtask) readedTask);
+                            break;
+                        case EPIC:
+                            epicsMap.put(id, (Epic) readedTask);
+                            break;
                     }
                 }
             }
@@ -156,7 +161,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         resetLastId();
         for (Subtask st : subtasksMap.values()) {
             int id = st.getEpicId();
-            epicsMap.get(id).dirtyAddSubtask(st);
+            Epic epic = epicsMap.get(id);
+            if (epic != null) {
+                epic.dirtyAddSubtask(st);
+            }
         }
     }
 

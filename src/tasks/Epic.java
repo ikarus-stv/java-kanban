@@ -33,8 +33,8 @@ public class Epic extends Task {
     }
 
     @Override
-    public String getTaskTypeName() {
-        return TaskType.EPIC.name();
+    public TaskType getTaskType() {
+        return TaskType.EPIC;
     }
 
     public void addSubtask(Subtask subtask) {

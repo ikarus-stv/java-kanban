@@ -84,15 +84,15 @@ public class Task {
     public List<String> toStreamableList() {
         var result = new ArrayList<String>();
         result.add(Integer.toString(getId()));                          // 0
-        result.add(getTaskTypeName());                                  // 1
+        result.add(getTaskType().name());                               // 1
         result.add(getName());                                          // 2
         result.add(getStatus().name());                                 // 3
         result.add(getDescription());                                   // 4
         return result;
     }
 
-    public String getTaskTypeName() {
-        return TaskType.TASK.name();
+    public TaskType getTaskType() {
+        return TaskType.TASK;
     }
 
     protected void fromStreamableList(List<String> streamableList) {
