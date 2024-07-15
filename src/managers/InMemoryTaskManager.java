@@ -180,9 +180,7 @@ public class InMemoryTaskManager implements TaskManager {
     public boolean deleteEpic(int id) {
         if (epicsMap.containsKey(id)) {
             List<Subtask> subtasks = getSubtasksByEpic(id);
-            for (Subtask st : subtasks) {
-                subtasksMap.remove(st.getId());
-            }
+            subtasks.stream().forEach(st->subtasksMap.remove(st.getId()));
             epicsMap.remove(id);
             return true;
         } else {
@@ -224,16 +222,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Subtask> getSubtasksByEpic(int id) {
-/*
-        ArrayList<Subtask> result = new ArrayList<>();
-        for (Subtask st : subtasksMap.values()) {
-            if (st.getEpicId() == id) {
-                result.add(st);
-            }
-        }
-        return result;
-
- */
         return subtasksMap.values().stream().filter(st -> st.getEpicId() == id).collect(Collectors.toList());
     }
 

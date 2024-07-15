@@ -173,9 +173,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     static FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager result = new FileBackedTaskManager(file.getPath());
-        //if (file.exists()) {
         result.load();
-        //}
         return result;
     }
 

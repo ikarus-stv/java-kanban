@@ -19,7 +19,6 @@ public class TaskSet extends TreeSet<Task> {
     }
 
     public void addOrUpdateTask(Task task) {
-        //return task.getStartTime() != null && super.add(task);
 
         if (contains(task)) {
             remove(task);
@@ -34,8 +33,6 @@ public class TaskSet extends TreeSet<Task> {
         if (task.getStartTime() == null) {
             return true;
         }
-
-        //return stream().filter( t-> t.getId() != task.getId() && tasksIntersects(t, task)).findFirst().isEmpty();
 
         return stream().noneMatch(t -> t.getId() != task.getId() && tasksIntersects(t, task));
     }
