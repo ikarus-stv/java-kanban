@@ -1,17 +1,15 @@
 import managers.Managers;
 import managers.TaskManager;
-import managers.TaskSet;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 import tasks.TaskStatus;
 
-import java.time.LocalDateTime;
 
 public class Main {
 
     public static void main(String[] args) {
-/*
+
         TaskManager tm = Managers.getDefault();
 
         Task task1 = new Task("Задача 1", "Описание задачи 1");
@@ -82,8 +80,8 @@ public class Main {
 
         System.out.println("История:");
         System.out.println(Managers.getDefaultHistory().getHistory());
-*/
 
+/*
         TaskSet ts = new managers.TaskSet();
 
         Task task1 = new Task("Задача 1", "Описание задачи 1");
@@ -96,6 +94,8 @@ public class Main {
         ts.add(task2);
 
         System.out.println(ts.getPrioritizedTasks());
+
+ */
 
     }
 
