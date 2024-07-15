@@ -6,13 +6,17 @@ import tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class InMemoryTaskManager implements TaskManager {
     private int lastId = 0;
     protected final Map<Integer, Task> taskMap = new HashMap<>();
     protected final Map<Integer, Subtask> subtasksMap = new HashMap<>();
     protected final Map<Integer, Epic> epicsMap = new HashMap<>();
+
+    protected final TaskSet taskSet = new TaskSet();
 
     @Override
     public ArrayList<Task> getAllTasks() {
@@ -29,14 +33,20 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(epicsMap.values());
     }
 
+    public List<Task> getPrioritizedTasks() {
+        return taskSet.getPrioritizedTasks();
+    }
+
     @Override
     public void clearAllTasks() {
         taskMap.clear();
+        taskSet.clearAllTasks();
     }
 
     @Override
     public void clearAllSubtasks() {
         subtasksMap.clear();
+        taskSet.clearAllSubtasks();
         for (Epic e : epicsMap.values()) {
             e.clearAllSubtasks();
         }
@@ -70,9 +80,15 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createTask(Task task) {
+    public boolean createTask(Task task) {
         task.setId(getNewId());
-        taskMap.put(task.getId(), task);
+        if (taskSet.canAddUpdateTask(task)) {
+            taskMap.put(task.getId(), task);
+            taskSet.addOrUpdateTask(task);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -81,9 +97,14 @@ public class InMemoryTaskManager implements TaskManager {
         if (epicsMap.containsKey(epicId)) {
             Epic epic = epicsMap.get(epicId);
             subtask.setId(getNewId());
-            subtasksMap.put(subtask.getId(), subtask);
-            epic.addSubtask(subtask);
-            return true;
+            if (taskSet.canAddUpdateTask(subtask)) {
+                taskSet.addOrUpdateTask(subtask);
+                subtasksMap.put(subtask.getId(), subtask);
+                epic.addSubtask(subtask);
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -102,8 +123,13 @@ public class InMemoryTaskManager implements TaskManager {
     public boolean updateTask(Task task) {
         int id = task.getId();
         if (taskMap.containsKey(id)) {
-            taskMap.get(id).updateFrom(task);
-            return true;
+            if (taskSet.canAddUpdateTask(task)) {
+                taskSet.addOrUpdateTask(task);
+                taskMap.get(id).updateFrom(task);
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -113,7 +139,7 @@ public class InMemoryTaskManager implements TaskManager {
     public boolean updateSubtask(Subtask subtask) {
         int id = subtask.getId();
         int newEpicId = subtask.getEpicId();
-        if (subtasksMap.containsKey(id) && epicsMap.containsKey(newEpicId)) {
+        if (subtasksMap.containsKey(id) && epicsMap.containsKey(newEpicId) && taskSet.canAddUpdateTask(subtask)) {
             Subtask oldSubtask = subtasksMap.get(id);
             int oldEpicId = oldSubtask.getEpicId();
             Epic oldEpic = epicsMap.get(oldEpicId);
@@ -121,6 +147,7 @@ public class InMemoryTaskManager implements TaskManager {
             oldEpic.removeSubtask(oldSubtask);
             oldSubtask.updateFrom(subtask);
             newEpic.addSubtask(oldSubtask);
+            taskSet.addOrUpdateTask(subtask);
             return true;
         } else {
             return false;
@@ -141,6 +168,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public boolean deleteTask(int id) {
         if (taskMap.containsKey(id)) {
+            taskSet.remove(taskMap.get(id));
             taskMap.remove(id);
             return true;
         } else {
@@ -151,9 +179,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public boolean deleteEpic(int id) {
         if (epicsMap.containsKey(id)) {
-            ArrayList<Subtask> subtasks = getSubtasksByEpic(id);
-            for (Subtask st : subtasks)
+            List<Subtask> subtasks = getSubtasksByEpic(id);
+            for (Subtask st : subtasks) {
                 subtasksMap.remove(st.getId());
+            }
             epicsMap.remove(id);
             return true;
         } else {
@@ -169,6 +198,7 @@ public class InMemoryTaskManager implements TaskManager {
             Epic epic = epicsMap.get(epicId);
             epic.removeSubtask(subtasksMap.get(id));
             subtasksMap.remove(id);
+            taskSet.remove(subtask);
             subtask.setId(0);
             return true;
         } else {
@@ -184,7 +214,7 @@ public class InMemoryTaskManager implements TaskManager {
     public boolean recalcEpic(int id) {
         if (epicsMap.containsKey(id)) {
             Epic epic = epicsMap.get(id);
-            epic.recalcStatus();
+            epic.recalc();
             return true;
         } else {
             return false;
@@ -193,7 +223,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Subtask> getSubtasksByEpic(int id) {
+    public List<Subtask> getSubtasksByEpic(int id) {
+/*
         ArrayList<Subtask> result = new ArrayList<>();
         for (Subtask st : subtasksMap.values()) {
             if (st.getEpicId() == id) {
@@ -201,6 +232,9 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         return result;
+
+ */
+        return subtasksMap.values().stream().filter(st -> st.getEpicId() == id).collect(Collectors.toList());
     }
 
     protected void resetLastId() {
@@ -220,6 +254,5 @@ public class InMemoryTaskManager implements TaskManager {
                 lastId = id;
             }
         }
-
     }
 }

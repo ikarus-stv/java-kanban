@@ -1,14 +1,17 @@
 import managers.Managers;
 import managers.TaskManager;
+import managers.TaskSet;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 import tasks.TaskStatus;
 
+import java.time.LocalDateTime;
+
 public class Main {
 
     public static void main(String[] args) {
-
+/*
         TaskManager tm = Managers.getDefault();
 
         Task task1 = new Task("Задача 1", "Описание задачи 1");
@@ -79,7 +82,23 @@ public class Main {
 
         System.out.println("История:");
         System.out.println(Managers.getDefaultHistory().getHistory());
+*/
+
+        TaskSet ts = new managers.TaskSet();
+
+        Task task1 = new Task("Задача 1", "Описание задачи 1");
+        task1.setStartTime(LocalDateTime.of(2010,1,15,12,10));
+
+        ts.add(task1);
+
+        Task task2 = new Task("Задача 2", "Описание задачи 2");
+        task2.setStartTime(LocalDateTime.of(2001,5,20,10,15));
+        ts.add(task2);
+
+        System.out.println(ts.getPrioritizedTasks());
+
+    }
+
 
 
     }
-}

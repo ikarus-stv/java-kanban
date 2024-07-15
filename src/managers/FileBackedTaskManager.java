@@ -37,9 +37,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void createTask(Task task) {
-        super.createTask(task);
-        save();
+    public boolean createTask(Task task) {
+        boolean result = super.createTask(task);
+        if (result) {
+            save();
+        }
+        return result;
     }
 
     @Override
@@ -170,9 +173,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     static FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager result = new FileBackedTaskManager(file.getPath());
-        if (file.exists()) {
-            result.load();
-        }
+        //if (file.exists()) {
+        result.load();
+        //}
         return result;
     }
 

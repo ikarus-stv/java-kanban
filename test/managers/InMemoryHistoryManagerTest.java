@@ -61,5 +61,33 @@ class InMemoryHistoryManagerTest {
 
     }
 
+    @Test
+    public void deleteTest() {
+        Task t1 = new Task("1", "11");
+        t1.setId(1);
+
+        hm.add(t1);
+
+        Task epic1 = new Epic("2", "22");
+        epic1.setId(2);
+        hm.add(epic1);
+
+        Task subtask1 = new Subtask("3", "333", 1);
+        subtask1.setId(3);
+        hm.add(subtask1);
+
+        List<Task> historyFull = hm.getHistory();
+
+        assertEquals(3, historyFull.size());
+
+        hm.remove(1);
+        hm.remove(2);
+        hm.remove(3);
+
+        List<Task> historyEmpty = hm.getHistory();
+
+        assertEquals(0, historyEmpty.size());
+
+    }
 
 }
