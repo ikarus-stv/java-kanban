@@ -180,7 +180,7 @@ public class InMemoryTaskManager implements TaskManager {
     public boolean deleteEpic(int id) {
         if (epicsMap.containsKey(id)) {
             List<Subtask> subtasks = getSubtasksByEpic(id);
-            subtasks.stream().forEach(st->subtasksMap.remove(st.getId()));
+            subtasks.stream().forEach(st -> subtasksMap.remove(st.getId()));
             epicsMap.remove(id);
             return true;
         } else {
