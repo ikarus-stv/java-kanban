@@ -34,14 +34,14 @@ public class Subtask extends Task {
     @Override
     public List<String> toStreamableList() {
         List<String> streamableList = super.toStreamableList();
-        streamableList.add(Integer.toString(getEpicId()));   // 5
+        streamableList.add(Integer.toString(getEpicId()));   // 7
         return streamableList;
     }
 
     @Override
     protected void fromStreamableList(List<String> streamableList) {
         super.fromStreamableList(streamableList);
-        setEpicId(Integer.parseInt(streamableList.get(5)));
+        setEpicId(Integer.parseInt(streamableList.get(7)));
     }
 
     @Override

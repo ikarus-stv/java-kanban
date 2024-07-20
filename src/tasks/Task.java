@@ -1,5 +1,8 @@
 package tasks;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,6 +12,12 @@ public class Task {
     protected String name;
     protected String description;
     protected TaskStatus status;
+
+    protected Duration duration;
+
+    protected LocalDateTime startTime;
+
+    public static final DateTimeFormatter DT_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     public Task() {
     }
@@ -35,6 +44,22 @@ public class Task {
         return status;
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -49,6 +74,18 @@ public class Task {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public LocalDateTime getEndTime() {
+        if (startTime != null) {
+            if (duration != null) {
+                return startTime.plus(duration);
+            } else {
+                return startTime;
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -73,11 +110,13 @@ public class Task {
 
     @Override
     public String toString() {
-        return "tasks.Task{" +
+        return "Task{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
                 '}';
     }
 
@@ -88,6 +127,8 @@ public class Task {
         result.add(getName());                                          // 2
         result.add(getStatus().name());                                 // 3
         result.add(getDescription());                                   // 4
+        result.add(dateTimeToStream(getStartTime()));                   // 5
+        result.add(durationToStream(getDuration()));                    // 6
         return result;
     }
 
@@ -100,6 +141,8 @@ public class Task {
         this.setName(streamableList.get(2));
         this.setStatus(TaskStatus.valueOf(streamableList.get(3)));
         this.setDescription(streamableList.get(4));
+        this.setStartTime(dateTimeFromStream(streamableList.get(5)));
+        this.setDuration(durationFromStream(streamableList.get(6)));
     }
 
     public static Task taskFromStreamableList(List<String> streamableList) {
@@ -121,5 +164,30 @@ public class Task {
 
         return result;
     }
+
+    static String dateTimeToStream(LocalDateTime time) {
+        String result = "";
+        if (time != null) {
+            result = time.format(DT_FORMATTER);
+        }
+        return result;
+    }
+
+    static LocalDateTime dateTimeFromStream(String stime) {
+        return LocalDateTime.parse(stime, DT_FORMATTER);
+    }
+
+    static String durationToStream(Duration duration) {
+        String result = "";
+        if (duration != null) {
+            result = Long.toString(duration.toMinutes());
+        }
+        return result;
+    }
+
+    static Duration durationFromStream(String sduration) {
+        return Duration.ofMinutes(Long.parseLong(sduration));
+    }
+
 
 }

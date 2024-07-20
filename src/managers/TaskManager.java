@@ -5,6 +5,7 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
     ArrayList<Task> getAllTasks();
@@ -25,7 +26,7 @@ public interface TaskManager {
 
     Epic getEpicById(int id);
 
-    void createTask(Task task);
+    boolean createTask(Task task);
 
     boolean createSubtask(Subtask subtask);
 
@@ -43,5 +44,5 @@ public interface TaskManager {
 
     boolean deleteSubtask(int id);
 
-    ArrayList<Subtask> getSubtasksByEpic(int id);
+    List<Subtask> getSubtasksByEpic(int id);
 }
