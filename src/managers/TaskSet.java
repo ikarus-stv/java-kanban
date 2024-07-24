@@ -19,14 +19,15 @@ public class TaskSet extends TreeSet<Task> {
     }
 
     public void addOrUpdateTask(Task task) {
+        if (task.getStartTime() == null) {
+            return;
+        }
 
         if (contains(task)) {
             remove(task);
         }
 
-        if (task.getStartTime() != null) {
-            add(task);
-        }
+        add(task);
     }
 
     public boolean canAddUpdateTask(Task task) {

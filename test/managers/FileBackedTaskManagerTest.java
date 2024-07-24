@@ -57,7 +57,7 @@ public class FileBackedTaskManagerTest {
             assertEquals(br.readLine(), "1,TASK,task1,NEW,description 1,10.07.2024 12:30,20");
             assertEquals(br.readLine(), "2,TASK,task2,NEW,description 2,11.07.2024 17:15,15");
             assertEquals(br.readLine(), "4,SUBTASK,Subtask1,NEW,Subtask2,12.07.2024 15:20,15,3");
-            assertEquals(br.readLine(), "3,EPIC,Epic1,NEW,descr epic 1,12.07.2024 15:20,0,12.07.2024 15:35");
+            assertEquals(br.readLine(), "3,EPIC,Epic1,NEW,descr epic 1,12.07.2024 15:20,15,12.07.2024 15:35");
 
         } catch (IOException e) {
             throw new ManagerSaveException(e);

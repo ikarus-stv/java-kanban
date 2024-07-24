@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class TaskManagerTest<T extends TaskManager> {
     T tm;
@@ -36,7 +37,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void createSubtaskWithoutEpicIsUnSuccess() {
         Subtask st = new Subtask("1", "2", 2);
-        assertFalse(tm.createSubtask(st));
+        assertThrows(TaskNotFoundException.class, () -> tm.createSubtask(st));
     }
 
     @Test
@@ -51,8 +52,10 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertTrue(tm.createSubtask(trueST));
 
         Subtask wrongST = new Subtask("1", "2", epicId + 100);
-        assertFalse(tm.createSubtask(wrongST));
 
+        assertThrows(TaskNotFoundException.class, () -> {
+            tm.createSubtask(wrongST);
+        });
 
     }
 
@@ -187,7 +190,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         st2.setStatus(TaskStatus.IN_PROGRESS);
         st2.setStartTime(LocalDateTime.of(2024, 1, 10, 12, 15));
         st2.setDuration(Duration.ofMinutes(10));
-        assertFalse(tm.createSubtask(st2));
+        assertThrows(TasksIntersectsException.class, () -> tm.createSubtask(st2));
 
     }
 }

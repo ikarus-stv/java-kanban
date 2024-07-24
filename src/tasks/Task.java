@@ -28,6 +28,14 @@ public class Task {
         this.status = TaskStatus.NEW;
     }
 
+    public Task(String name, String description, TaskStatus taskStatus, Duration duration, LocalDateTime dt) {
+        this.name = name;
+        this.description = description;
+        this.status = taskStatus;
+        this.duration = duration;
+        this.startTime = dt;
+    }
+
     public int getId() {
         return id;
     }
@@ -165,7 +173,7 @@ public class Task {
         return result;
     }
 
-    static String dateTimeToStream(LocalDateTime time) {
+    public static String dateTimeToStream(LocalDateTime time) {
         String result = "";
         if (time != null) {
             result = time.format(DT_FORMATTER);
@@ -173,11 +181,11 @@ public class Task {
         return result;
     }
 
-    static LocalDateTime dateTimeFromStream(String stime) {
+    public static LocalDateTime dateTimeFromStream(String stime) {
         return LocalDateTime.parse(stime, DT_FORMATTER);
     }
 
-    static String durationToStream(Duration duration) {
+    public static String durationToStream(Duration duration) {
         String result = "";
         if (duration != null) {
             result = Long.toString(duration.toMinutes());
@@ -185,7 +193,7 @@ public class Task {
         return result;
     }
 
-    static Duration durationFromStream(String sduration) {
+    public static Duration durationFromStream(String sduration) {
         return Duration.ofMinutes(Long.parseLong(sduration));
     }
 
