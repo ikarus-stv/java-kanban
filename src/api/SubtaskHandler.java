@@ -11,7 +11,6 @@ import tasks.Subtask;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.function.Predicate;
 
 public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
