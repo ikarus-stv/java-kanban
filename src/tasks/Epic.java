@@ -9,7 +9,7 @@ public class Epic extends Task {
 
     private LocalDateTime endTime = LocalDateTime.MAX;
 
-    transient private final List<Subtask> subtasks = new ArrayList<>();
+    private transient final List<Subtask> subtasks = new ArrayList<>();
 
     public Epic() {
     }
