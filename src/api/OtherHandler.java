@@ -5,15 +5,9 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import managers.Managers;
 import managers.TaskManager;
-import managers.TaskNotFoundException;
-import managers.TasksIntersectsException;
-import tasks.Epic;
-import tasks.Subtask;
 import tasks.Task;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class OtherHandler extends BaseHttpHandler implements HttpHandler {
