@@ -32,12 +32,12 @@ public class FileBackedTaskManagerTest {
         File tfile = tempFile();
         FileBackedTaskManager tm = FileBackedTaskManager.loadFromFile(tfile);
         Task task = new Task("task1", "description 1");
-        task.setStartTime(LocalDateTime.of(2024, 07, 10, 12, 30));
+        task.setStartTime(LocalDateTime.of(2024, 7, 10, 12, 30));
         task.setDuration(Duration.ofMinutes(20));
 
         tm.createTask(task);
         Task task2 = new Task("task2", "description 2");
-        task2.setStartTime(LocalDateTime.of(2024, 07, 11, 17, 15));
+        task2.setStartTime(LocalDateTime.of(2024, 7, 11, 17, 15));
         task2.setDuration(Duration.ofMinutes(15));
         tm.createTask(task2);
         Epic epic = new Epic("Epic1", "descr epic 1");
@@ -47,7 +47,7 @@ public class FileBackedTaskManagerTest {
         assertNotEquals(0, epicId);
 
         Subtask trueST = new Subtask("Subtask1", "Subtask2", epicId);
-        trueST.setStartTime(LocalDateTime.of(2024, 07, 12, 15, 20));
+        trueST.setStartTime(LocalDateTime.of(2024, 7, 12, 15, 20));
         trueST.setDuration(Duration.ofMinutes(15));
         assertTrue(tm.createSubtask(trueST));
 
@@ -102,7 +102,7 @@ public class FileBackedTaskManagerTest {
 
         assertThrows(ManagerSaveException.class, () -> {
             FileBackedTaskManager tmp = FileBackedTaskManager.loadFromFile(new File("---"));
-            ;
+
         }, "Инициализация несуществующим файлом должна приводить к исключению");
 
     }

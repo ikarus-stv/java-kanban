@@ -53,9 +53,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
         Subtask wrongST = new Subtask("1", "2", epicId + 100);
 
-        assertThrows(TaskNotFoundException.class, () -> {
-            tm.createSubtask(wrongST);
-        });
+        assertThrows(TaskNotFoundException.class, () -> tm.createSubtask(wrongST));
 
     }
 
