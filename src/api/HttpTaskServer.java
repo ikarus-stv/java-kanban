@@ -73,16 +73,5 @@ public class HttpTaskServer {
 
         HttpTaskServer server = new HttpTaskServer(tm);
         server.start();
-/*
-        Gson gson = new GsonBuilder()
-                    .setPrettyPrinting()
-                    .registerTypeAdapter(Duration.class, new DurationAdapter())
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                    .create(); // завершаем построение объекта
-
-        ArrayList<Task> allTasks = tm.getAllTasks();
-        String jsonstr = gson.toJson(allTasks);
-        System.out.println(jsonstr);
-*/
     }
 }

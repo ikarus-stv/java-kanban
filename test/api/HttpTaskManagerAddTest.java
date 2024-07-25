@@ -70,7 +70,7 @@ public class HttpTaskManagerAddTest {
 
         assertNotNull(tasksFromManager, "Задачи не возвращаются");
         assertEquals(1, tasksFromManager.size(), "Некорректное количество задач");
-        assertEquals("Test 2", tasksFromManager.get(0).getName(), "Некорректное имя задачи");
+        assertEquals("Test 2", tasksFromManager.getFirst().getName(), "Некорректное имя задачи");
     }
 
     @Test
@@ -103,17 +103,18 @@ public class HttpTaskManagerAddTest {
 
         assertNotNull(tasksFromManager, "Подзадачи не возвращаются");
         assertEquals(1, tasksFromManager.size(), "Некорректное количество подзадач");
-        assertEquals("Подзадача 1.1", tasksFromManager.get(0).getName(), "Некорректное имя подзадачи");
+        assertEquals("Подзадача 1.1", tasksFromManager.getFirst().getName(), "Некорректное имя подзадачи");
     }
 
     @Test
     public void testAddEpic() throws IOException, InterruptedException {
-        String epicJson = "{\n" +
-                "\t\"id\": 0,\n" +
-                "\t\"name\": \"Эпик новый\",\n" +
-                "\t\"description\": \"Описание эпика нового\",\n" +
-                "\t\"status\": \"NEW\"\n" +
-                "}";
+        String epicJson = """
+                {
+                \t"id": 0,
+                \t"name": "Эпик новый",
+                \t"description": "Описание эпика нового",
+                \t"status": "NEW"
+                }""";
 
         // создаём HTTP-клиент и запрос
         HttpClient client = HttpClient.newHttpClient();
@@ -130,7 +131,7 @@ public class HttpTaskManagerAddTest {
 
         assertNotNull(tasksFromManager, "Эпики не возвращаются");
         assertEquals(1, tasksFromManager.size(), "Некорректное количество подзадач");
-        assertEquals("Эпик новый", tasksFromManager.get(0).getName(), "Некорректное имя подзадачи");
+        assertEquals("Эпик новый", tasksFromManager.getFirst().getName(), "Некорректное имя подзадачи");
     }
 
 }

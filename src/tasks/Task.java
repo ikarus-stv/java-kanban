@@ -99,8 +99,7 @@ public class Task {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Task)) return false;
-        Task oAsTask = (Task) o;
+        if (!(o instanceof Task oAsTask)) return false;
         return getId() == oAsTask.getId();
     }
 
@@ -154,7 +153,7 @@ public class Task {
     }
 
     public static Task taskFromStreamableList(List<String> streamableList) {
-        Task result = null;
+        Task result;
         switch (TaskType.valueOf(streamableList.get(1).toUpperCase())) {
             case TASK:
                 result = new Task();

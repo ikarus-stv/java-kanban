@@ -27,32 +27,13 @@ public class OtherHandler extends BaseHttpHandler implements HttpHandler {
 
         System.out.println(path);
 
-        if ("GET".equals(method)) {
+        if (METHOD_GET.equals(method)) {
             if ("/history".equals(path)) {
                 history(exchange);
             } else if ("/prioritized".equals(path)) {
                 prioritized(exchange);
             }
         }
-
-            /*
-            if ("GET".equals(method)) {
-                if (id == NO_ID) {
-                    getAll(exchange);
-                } else {
-                    if(splitPath.length>3 && "subtasks".equals(splitPath[3])) {
-                        getSubtasksByEpic(exchange, id);
-                    } else {
-                        getById(exchange, id);
-                    }
-                }
-            } else if ("POST".equals(method)) {
-                post(exchange);
-            } else if ("DELETE".equals(method) && id != NO_ID) {
-                delete(exchange, id);
-            }
-
-             */
     }
 
     private void prioritized(HttpExchange exchange) throws IOException {

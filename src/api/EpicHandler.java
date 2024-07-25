@@ -38,7 +38,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         }
 
         try {
-            if ("GET".equals(method)) {
+            if (METHOD_GET.equals(method)) {
                 if (id == NO_ID) {
                     getAll(exchange);
                 } else {
@@ -48,18 +48,15 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                         getById(exchange, id);
                     }
                 }
-            } else if ("POST".equals(method)) {
+            } else if (METHOD_POST.equals(method)) {
                 post(exchange);
-            } else if ("DELETE".equals(method) && id != NO_ID) {
+            } else if (METHOD_DELETE.equals(method) && id != NO_ID) {
                 delete(exchange, id);
             }
         } catch (TaskNotFoundException e) {
             send404(exchange);
         } catch (TasksIntersectsException e) {
             send406(exchange);
-        } catch (Exception e) {
-            System.out.println(e.toString());
-            e.printStackTrace();
         }
     }
 

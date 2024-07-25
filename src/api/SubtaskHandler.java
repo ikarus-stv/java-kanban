@@ -36,15 +36,15 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
         }
 
         try {
-            if ("GET".equals(method)) {
+            if (METHOD_GET.equals(method)) {
                 if (id == NO_ID) {
                     getAll(exchange);
                 } else {
                     getById(exchange, id);
                 }
-            } else if ("POST".equals(method)) {
+            } else if (METHOD_POST.equals(method)) {
                 post(exchange);
-            } else if ("DELETE".equals(method) && id != NO_ID) {
+            } else if (METHOD_DELETE.equals(method) && id != NO_ID) {
                 delete(exchange, id);
             }
         } catch (TaskNotFoundException e) {

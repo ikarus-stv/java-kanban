@@ -10,7 +10,7 @@ public class Epic extends Task {
     private LocalDateTime endTime = LocalDateTime.MAX;
 
     // Тут раньше был final, но на него ругается CheckStyle, пришлось выкинуть
-    private transient List<Subtask> subtasks = new ArrayList<>();
+    private final transient List<Subtask> subtasks = new ArrayList<>();
 
     public Epic() {
     }

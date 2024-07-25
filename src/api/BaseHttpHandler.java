@@ -12,6 +12,11 @@ import java.time.LocalDateTime;
 public class BaseHttpHandler {
     protected static final int NO_ID = -1;
 
+    protected static final String METHOD_GET = "GET";
+    protected static final String METHOD_POST = "POST";
+    protected static final String METHOD_DELETE = "DELETE";
+
+
     protected void sendText(HttpExchange h, String text) throws IOException {
         byte[] resp = text.getBytes(StandardCharsets.UTF_8);
         h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
@@ -39,12 +44,11 @@ public class BaseHttpHandler {
 
 
     public static Gson createGson() {
-        Gson gson = new GsonBuilder()
+        return new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Duration.class, new DurationAdapter())
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .create(); // завершаем построение объекта
-        return gson;
+                .create();
 
     }
 }
