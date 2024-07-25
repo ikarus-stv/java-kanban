@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 public class TaskSet extends TreeSet<Task> {
     public TaskSet() {
@@ -19,14 +18,15 @@ public class TaskSet extends TreeSet<Task> {
     }
 
     public void addOrUpdateTask(Task task) {
+        if (task.getStartTime() == null) {
+            return;
+        }
 
         if (contains(task)) {
             remove(task);
         }
 
-        if (task.getStartTime() != null) {
-            add(task);
-        }
+        add(task);
     }
 
     public boolean canAddUpdateTask(Task task) {
@@ -42,17 +42,17 @@ public class TaskSet extends TreeSet<Task> {
             return false;
         }
 
-        return (t1.getStartTime().compareTo(t2.getEndTime()) < 0 && t2.getStartTime().compareTo(t1.getEndTime()) < 0);
+        return (t1.getStartTime().isBefore(t2.getEndTime()) && t2.getStartTime().isBefore(t1.getEndTime()));
     }
 
 
     public void clearAllTasks() {
-        List<Task> list = stream().filter(t -> t.getTaskType() == TaskType.TASK).collect(Collectors.toList());
-        list.forEach(t -> remove(t));
+        List<Task> list = stream().filter(t -> t.getTaskType() == TaskType.TASK).toList();
+        list.forEach(this::remove);
     }
 
     public void clearAllSubtasks() {
-        List<Task> list = stream().filter(t -> t.getTaskType() == TaskType.SUBTASK).collect(Collectors.toList());
-        list.forEach(t -> remove(t));
+        List<Task> list = stream().filter(t -> t.getTaskType() == TaskType.SUBTASK).toList();
+        list.forEach(this::remove);
     }
 }

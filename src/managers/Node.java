@@ -16,12 +16,13 @@ public class Node {
     public void unlink() {
         if (prev != null) {
             prev.next = next;
-            prev = null;
         }
 
         if (next != null) {
             next.prev = prev;
-            next = null;
         }
+        prev = null;
+        next = null;
+
     }
 }

@@ -33,6 +33,7 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(epicsMap.values());
     }
 
+    @Override
     public List<Task> getPrioritizedTasks() {
         return taskSet.getPrioritizedTasks();
     }
@@ -61,6 +62,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTaskById(int id) {
         Task result = taskMap.get(id);
+        if (result == null) {
+            throw new TaskNotFoundException();
+        }
         Managers.getDefaultHistory().add(result);
         return result;
     }
@@ -68,6 +72,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask getSubtaskById(int id) {
         Subtask result = subtasksMap.get(id);
+        if (result == null) {
+            throw new TaskNotFoundException();
+        }
         Managers.getDefaultHistory().add(result);
         return result;
     }
@@ -75,6 +82,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Epic getEpicById(int id) {
         Epic result = epicsMap.get(id);
+        if (result == null) {
+            throw new TaskNotFoundException();
+        }
         Managers.getDefaultHistory().add(result);
         return result;
     }
@@ -87,7 +97,7 @@ public class InMemoryTaskManager implements TaskManager {
             taskSet.addOrUpdateTask(task);
             return true;
         } else {
-            return false;
+            throw new TasksIntersectsException();
         }
     }
 
@@ -103,10 +113,10 @@ public class InMemoryTaskManager implements TaskManager {
                 epic.addSubtask(subtask);
                 return true;
             } else {
-                return false;
+                throw new TasksIntersectsException();
             }
         } else {
-            return false;
+            throw new TaskNotFoundException();
         }
 
     }
@@ -128,10 +138,10 @@ public class InMemoryTaskManager implements TaskManager {
                 taskMap.get(id).updateFrom(task);
                 return true;
             } else {
-                return false;
+                throw new TasksIntersectsException();
             }
         } else {
-            return false;
+            throw new TaskNotFoundException();
         }
     }
 
@@ -139,7 +149,10 @@ public class InMemoryTaskManager implements TaskManager {
     public boolean updateSubtask(Subtask subtask) {
         int id = subtask.getId();
         int newEpicId = subtask.getEpicId();
-        if (subtasksMap.containsKey(id) && epicsMap.containsKey(newEpicId) && taskSet.canAddUpdateTask(subtask)) {
+        if (subtasksMap.containsKey(id) && epicsMap.containsKey(newEpicId)) {
+            if (!taskSet.canAddUpdateTask(subtask)) {
+                throw new TasksIntersectsException();
+            }
             Subtask oldSubtask = subtasksMap.get(id);
             int oldEpicId = oldSubtask.getEpicId();
             Epic oldEpic = epicsMap.get(oldEpicId);
@@ -150,7 +163,7 @@ public class InMemoryTaskManager implements TaskManager {
             taskSet.addOrUpdateTask(subtask);
             return true;
         } else {
-            return false;
+            throw new TaskNotFoundException();
         }
     }
 
@@ -161,7 +174,7 @@ public class InMemoryTaskManager implements TaskManager {
             epicsMap.get(id).updateFrom(epic);
             return true;
         } else {
-            return false;
+            throw new TaskNotFoundException();
         }
     }
 
@@ -172,7 +185,7 @@ public class InMemoryTaskManager implements TaskManager {
             taskMap.remove(id);
             return true;
         } else {
-            return false;
+            throw new TaskNotFoundException();
         }
     }
 
@@ -180,11 +193,11 @@ public class InMemoryTaskManager implements TaskManager {
     public boolean deleteEpic(int id) {
         if (epicsMap.containsKey(id)) {
             List<Subtask> subtasks = getSubtasksByEpic(id);
-            subtasks.stream().forEach(st -> subtasksMap.remove(st.getId()));
+            subtasks.forEach(st -> subtasksMap.remove(st.getId()));
             epicsMap.remove(id);
             return true;
         } else {
-            return false;
+            throw new TaskNotFoundException();
         }
     }
 
@@ -200,7 +213,7 @@ public class InMemoryTaskManager implements TaskManager {
             subtask.setId(0);
             return true;
         } else {
-            return false;
+            throw new TaskNotFoundException();
         }
     }
 
@@ -215,7 +228,7 @@ public class InMemoryTaskManager implements TaskManager {
             epic.recalc();
             return true;
         } else {
-            return false;
+            throw new TaskNotFoundException();
         }
 
     }

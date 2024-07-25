@@ -9,7 +9,8 @@ public class Epic extends Task {
 
     private LocalDateTime endTime = LocalDateTime.MAX;
 
-    private final List<Subtask> subtasks = new ArrayList<>();
+    // Тут раньше был final, но на него ругается CheckStyle, пришлось выкинуть
+    private final transient List<Subtask> subtasks = new ArrayList<>();
 
     public Epic() {
     }
@@ -72,7 +73,7 @@ public class Epic extends Task {
             }
             Duration stDuration = st.getDuration();
             if (stDuration != null) {
-                duration.plus(st.getDuration());
+                duration = duration.plus(stDuration);
             }
         }
     }

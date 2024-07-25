@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    private String fileName;
+    private final String fileName;
     private static final String FILE_HEADER = "id,type,name,status,description,epic";
     private static final String COMMA = ",";
 
